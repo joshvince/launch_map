@@ -23,11 +23,8 @@ defmodule LaunchMap.TerritoryChannel do
   end
 
   def handle_in("add_territory", payload, socket) do
-     # payload should be something like [name: name, code: code]
-     # then need to either pass to controller, or just do it right here in the channel...
      create_territory(payload)
      |> broadcast_added_territory(socket)
-
   end
 
   def create_territory(params) do
@@ -40,6 +37,16 @@ defmodule LaunchMap.TerritoryChannel do
 
   def broadcast_added_territory(%{code: code, name: name} = territory, socket) do
      broadcast socket, "add_territory", %{code: code, name: name}
+     {:reply, :ok, socket}
+  end
+
+  def handle_in("manual_add_territory", payload, socket) do
+     create_territory(payload)
+     |> broadcast_manual_added_territory(socket)
+  end
+
+  def broadcast_manual_added_territory(%{name: name} = territory, socket) do
+     broadcast socket, "manual_add_territory", %{name: name}
      {:reply, :ok, socket}
   end
 

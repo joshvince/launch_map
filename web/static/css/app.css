@@ -1,6 +1,6 @@
 /* This file is for your main application css. */
 
-h1, h2, h3, h4 {
+h1, h2, h3, h4, p {
    font-family: 'Muli';
    color: rgb(29, 37, 45);
 }
@@ -27,5 +27,13 @@ h1, h2, h3, h4 {
 }
 
 .dark {
+   background-color: rgb(106,190,193);
+}
+
+.input-group{
+   margin-bottom: 20px;
+}
+
+.btn-default:hover, .btn-default:active, .btn-default:focus {
    background-color: rgb(106,190,193);
 }

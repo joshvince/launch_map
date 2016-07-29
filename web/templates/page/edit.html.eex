@@ -11,16 +11,20 @@
       <div class="col-sm-12 col-md-6">
          <div id="world-map-editable" style="width: 70vw; height: 80vh" class="center-block"></div>
       </div>
-      <div class="col-sm-6 col-sm-offset-3 col-md-3 info-list">
+      <div id="manual-territory-list" class="col-sm-6 col-sm-offset-3 col-md-3 info-list">
          <div class="col-sm-12 text-center">
-            <h3>Live Territories</h3>
+            <h3>Add Other</h3>
+            <p>Add a territory not on the map</p>
          </div>
-         <div class="col-sm-12 text-center" id="territory-count">
+         <div class="class col-sm-12">
+            <div class="input-group input-group-lg">
+              <input id="manual-territory-name" type="text" class="form-control" placeholder="Territory Name">
+              <span class="input-group-btn">
+                <button id="add-manual-territory" class="btn btn-default dark" type="button">Add</button>
+              </span>
+            </div>
+         </div>
 
-         </div>
-         <div class="col-sm-12">
-
-         </div>
       </div>
    </div>
 </div>

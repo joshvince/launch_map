@@ -73,7 +73,16 @@ if (document.getElementById('world-map-editable')) {
            return {"code": code, "name": Map.countries[code].name}
         }
         mapChannel.push('add_territory', payload)
+     })
 
+     $(document).on('click', '#add-manual-territory', function(){
+        let name = document.getElementById('manual-territory-name').value
+        let payload = {"name": name, "code": "00"}
+        mapChannel.push('manual_add_territory', payload)
+     })
+
+     mapChannel.on('manual_add_territory', resp => {
+        App.displayManualAddedTerritory(resp)
      })
 
 
@@ -91,6 +100,10 @@ else {
 
    mapChannel.on('add_territory', resp => {
       App.update(resp)
+   })
+
+   mapChannel.on('manual_add_territory', resp => {
+      App.updateManualAddedTerritory(resp)
    })
 
 }
