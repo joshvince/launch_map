@@ -2,22 +2,23 @@ exports.config = {
   // See http://brunch.io/#documentation for docs.
   files: {
     javascripts: {
-      joinTo: "js/app.js"
+      // joinTo: "js/app.js"
 
       // To use a separate vendor.js bundle, specify two files path
       // http://brunch.io/docs/config#-files-
-      // joinTo: {
-      //  "js/app.js": /^(web\/static\/js)/,
-      //  "js/vendor.js": /^(web\/static\/vendor)|(deps)/
-      // }
+      joinTo: {
+       "js/app.js": /^(web\/static\/js)/,
+       "js/vendor.js": /^(web\/static\/vendor)|(deps)|(priv\/static\/phoenix*)/
+
+    },
       //
       // To change the order of concatenation of files, explicitly mention here
-      // order: {
-      //   before: [
-      //     "web/static/vendor/js/jquery-2.1.1.js",
-      //     "web/static/vendor/js/bootstrap.min.js"
-      //   ]
-      // }
+      order: {
+        before: [
+          "web/static/vendor/jquery-jvectormap-2.0.3.min.js",
+          "web/static/vendor/jquery-jvectormap-world-mill.js"
+        ]
+      }
     },
     stylesheets: {
       joinTo: "css/app.css",

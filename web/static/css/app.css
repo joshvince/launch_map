@@ -1,1 +1,39 @@
 /* This file is for your main application css. */
+
+h1, h2, h3, h4, p {
+   font-family: 'Muli';
+   color: rgb(29, 37, 45);
+}
+
+.info-list{
+   background-color: rgba(136, 219, 223, 0.3);
+   padding-left: 0;
+   padding-right: 0;
+   max-height: 80vh;
+   overflow: scroll;
+}
+
+#territory-list{
+   padding: 0;
+
+}
+
+.country {
+   margin-bottom: 1px;
+}
+
+.light {
+   background-color: rgba(106,190,193,0.5);
+}
+
+.dark {
+   background-color: rgb(106,190,193);
+}
+
+.input-group{
+   margin-bottom: 20px;
+}
+
+.btn-default:hover, .btn-default:active, .btn-default:focus {
+   background-color: rgb(106,190,193);
+}

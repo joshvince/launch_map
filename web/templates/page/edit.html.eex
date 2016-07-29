@@ -1,0 +1,32 @@
+<div class="container-fluid">
+   <div class="row">
+      <div class="col-sm-11 text-center">
+         <h1>Click on a country to add it</h1>
+      </div>
+      <div class="col-sm-1">
+         <%= link("back", to: page_path(@conn, :index), class: "btn btn-primary") %>
+      </div>
+   </div>
+   <div class="row">
+      <div class="col-sm-12 col-md-6">
+         <div id="world-map-editable" style="width: 70vw; height: 80vh" class="center-block"></div>
+      </div>
+      <div id="manual-territory-list" class="col-sm-6 col-sm-offset-3 col-md-3 info-list">
+         <div class="col-sm-12 text-center">
+            <h3>Add Other</h3>
+            <p>Add a territory not on the map</p>
+         </div>
+         <div class="class col-sm-12">
+            <div class="input-group input-group-lg">
+              <input id="manual-territory-name" type="text" class="form-control" placeholder="Territory Name">
+              <span class="input-group-btn">
+                <button id="add-manual-territory" class="btn btn-default dark" type="button">Add</button>
+              </span>
+            </div>
+         </div>
+
+      </div>
+   </div>
+</div>
+
+<script src="<%= static_path(@conn, "/js/app.js") %>"></script>

@@ -4,6 +4,8 @@ defmodule LaunchMap.UserSocket do
   ## Channels
   # channel "room:*", LaunchMap.RoomChannel
 
+  channel "map:*", LaunchMap.TerritoryChannel
+
   ## Transports
   transport :websocket, Phoenix.Transports.WebSocket
   # transport :longpoll, Phoenix.Transports.LongPoll
