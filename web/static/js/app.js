@@ -27,15 +27,22 @@ export var App = {
    initialise: function(territoryObject){
       Map.generate(territoryObject);
       Info.initialCount(territoryObject);
-      Info.addToList(territoryObject, 'many');
+      Info.addToStaticList(territoryObject, 'many');
    },
    initialiseEditable: function(territoryObject){
       Map.generateEditable(territoryObject);
    },
    update: function(updateObject){
-      Info.addToList(updateObject, 'one')
+      Info.addToStaticList(updateObject, 'one')
       Info.updateCount()
       Map.addTerritory(updateObject.code, updateObject.name)
+   },
+   updateManualAddedTerritory: function(updateObject){
+      Info.addToStaticList(updateObject, 'one')
+      Info.updateCount()
+   },
+   displayManualAddedTerritory: function(updateObject){
+      Info.addToDynamicList(updateObject)
    }
 
 }
