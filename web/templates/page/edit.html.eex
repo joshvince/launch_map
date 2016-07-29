@@ -1,29 +1,28 @@
 <div class="container-fluid">
    <div class="row">
       <div class="col-sm-11 text-center">
-         <h1>Where are we live?</h1>
+         <h1>Click on a country to add it</h1>
       </div>
       <div class="col-sm-1">
-         <%= link("edit", to: page_path(@conn, :edit), class: "btn btn-primary") %>
+         <%= link("back", to: page_path(@conn, :index), class: "btn btn-primary") %>
       </div>
    </div>
    <div class="row">
       <div class="col-sm-12 col-md-6">
-         <div id="world-map" style="width: 70vw; height: 80vh" class="center-block"></div>
+         <div id="world-map-editable" style="width: 70vw; height: 80vh" class="center-block"></div>
       </div>
       <div class="col-sm-6 col-sm-offset-3 col-md-3 info-list">
          <div class="col-sm-12 text-center">
             <h3>Live Territories</h3>
          </div>
          <div class="col-sm-12 text-center" id="territory-count">
-            
+
          </div>
-         <div class="col-sm-12" id="territory-list">
+         <div class="col-sm-12">
 
          </div>
       </div>
    </div>
 </div>
-
 
 <script src="<%= static_path(@conn, "/js/app.js") %>"></script>

@@ -5,6 +5,10 @@
 // and connect at the socket path in "lib/my_app/endpoint.ex":
 import {Socket} from "phoenix"
 
+import {App} from "./app"
+import {Map} from "./map"
+import {Info} from "./info"
+
 let socket = new Socket("/socket", {params: {token: window.userToken}})
 
 // When you connect, you'll often need to authenticate the client.
@@ -54,9 +58,43 @@ let socket = new Socket("/socket", {params: {token: window.userToken}})
 socket.connect()
 
 // Now that you are connected, you can join channels with a topic:
-let channel = socket.channel("topic:subtopic", {})
-channel.join()
-  .receive("ok", resp => { console.log("Joined successfully", resp) })
-  .receive("error", resp => { console.log("Unable to join", resp) })
+let mapChannel = socket.channel("map:all")
+
+if (document.getElementById('world-map-editable')) {
+// EDIT MODE
+   mapChannel.join()
+     .receive("ok", resp => { App.initialiseEditable(resp)})
+     .receive("error", resp => { console.log("Unable to join", resp) })
+
+     $(document).on('click', 'path.jvectormap-region.jvectormap-element', function(){
+        let code = $(this).attr('data-code')
+        let payload = territoryPayloadObject(code)
+        function territoryPayloadObject(code){
+           return {"code": code, "name": Map.countries[code].name}
+        }
+        mapChannel.push('add_territory', payload)
+
+     })
+
+
+
+      // handle added/removed territories
+
+
+}
+
+else {
+// VIEW MODE
+   mapChannel.join()
+     .receive("ok", resp => { App.initialise(resp)})
+     .receive("error", resp => { console.log("Unable to join", resp) })
+
+   mapChannel.on('add_territory', resp => {
+      App.update(resp)
+   })
+
+}
+
+
 
 export default socket
