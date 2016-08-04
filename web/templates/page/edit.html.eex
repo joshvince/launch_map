@@ -9,12 +9,12 @@
    </div>
    <div class="row">
       <div class="col-sm-12 col-md-6">
-         <div id="world-map-editable" style="width: 70vw; height: 80vh" class="center-block"></div>
+         <div id="world-map-editable" style="width: 70vw; height: 80vh" class="center-block map-wrapper"></div>
       </div>
-      <div id="manual-territory-list" class="col-sm-6 col-sm-offset-3 col-md-3 info-list">
+      <div id="territory-list" class="col-sm-6 col-sm-offset-3 col-md-3 info-list">
          <div class="col-sm-12 text-center">
             <h3>Add Other</h3>
-            <p>Add a territory not on the map</p>
+            <p>Add a country not on the map</p>
          </div>
          <div class="class col-sm-12">
             <div class="input-group input-group-lg">
@@ -24,6 +24,13 @@
               </span>
             </div>
          </div>
+         <div class="col-sm-12 text-center" id="territory-count">
+
+         </div>
+         <div class="col-sm-12 text-center">
+            <h3>Click to remove</h3>
+         </div>
+
 
       </div>
    </div>

@@ -1,5 +1,9 @@
 export var Map = {
-   generate: function(territoryCodeArray){
+   generate: function(territoryObject){
+      let codeArray = Object.keys(territoryObject).map(function(prop){return territoryObject[prop].code})
+      let mappableCodes = codeArray.filter(function(code){
+         if (code.slice(0,1) != "0") {return true}
+      })
          $(function(){
             $('#world-map').vectorMap({
                map: 'world_mill',
@@ -9,31 +13,41 @@ export var Map = {
                      fill: 'rgb(106,190,193)'
                   }
                },
-               selectedRegions: territoryCodeArray,
+               selectedRegions: mappableCodes,
             })
          })
    },
-   generateEditable: function(territoryCodeArray){
+   generateEditable: function(territoryObject){
+      let codeArray = Object.keys(territoryObject).map(function(prop){return territoryObject[prop].code})
+      let mappableCodes = codeArray.filter(function(code){
+         if (code.slice(0,1) != "0") {return true}
+      })
       $(function(){
          $('#world-map-editable').vectorMap({
             map: 'world_mill',
             backgroundColor: 'rgba(136, 219, 223, 0.3)',
             regionStyle: {
                selected: {
-                  fill: 'rgb(106,190,193)'
-               }
+                  fill: 'rgb(106,190,193)',
+                  class: 'jvectormap-region jvectormap-element added'
+               },
             },
-            selectedRegions: territoryCodeArray,
-            onRegionClick: function(event, code){
-               var map = $('#world-map-editable').vectorMap('get', 'mapObject')
-               map.setSelectedRegions(code)
-            }
+            selectedRegions: mappableCodes
          })
       })
+   },
+   addTerritoryEditable: function(code){
+      var map = $('#world-map-editable').vectorMap('get', 'mapObject')
+      map.setSelectedRegions(code)
    },
    addTerritory: function(code, name){
       var map = $('#world-map').vectorMap('get', 'mapObject')
       map.setSelectedRegions(code)
+   },
+   removeTerritory: function(div, code){
+      var map = $(`${div}`).vectorMap('get', 'mapObject')
+      var payload = {[code]: false}
+      map.setSelectedRegions(payload)
    },
    countries: {
      "AF": {"name": "Afghanistan", "coords": [33, 65]},

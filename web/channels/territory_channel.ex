@@ -9,13 +9,13 @@ defmodule LaunchMap.TerritoryChannel do
   end
 
   def map_of_added_territories do
-     Repo.all(all_territories)
+     Repo.all(territory_maps)
      |> Enum.into(%{}, fn list -> convert_list_to_tuple(list) end)
   end
 
-  def all_territories do
+  def territory_maps do
      from t in "territories",
-     select: [t.code, t.name]
+     select: [t.name, %{name: t.name, code: t.code}]
   end
 
   def convert_list_to_tuple([name, code]) do
@@ -40,15 +40,64 @@ defmodule LaunchMap.TerritoryChannel do
      {:reply, :ok, socket}
   end
 
-  def handle_in("manual_add_territory", payload, socket) do
-     create_territory(payload)
-     |> broadcast_manual_added_territory(socket)
+  def handle_in("remove_territory", payload, socket) do
+     atomise_and_fetch_by(payload, :code)
+     |> remove_territory
+     |> broadcast_removed_territory(socket)
   end
 
-  def broadcast_manual_added_territory(%{name: name} = territory, socket) do
-     broadcast socket, "manual_add_territory", %{name: name}
+# # handle cases where a territory was removed NOT via the map.
+#   def handle_in("remove_territory", %{"code" => "00"} = payload, socket) do
+#      atomise_and_fetch_by(payload, :name)
+#      |> remove_territory
+#      |> broadcast_removed_territory(socket)
+#   end
+#
+#  # handle cases where a territory was removed via the map
+#   def handle_in("remove_territory", payload, socket) do
+#      atomise_and_fetch_by(payload, :code)
+#      |> remove_territory
+#      |> broadcast_removed_territory(socket)
+#   end
+
+  def atomise_and_fetch_by(map, :code) do
+     payload = atomise_map(map)
+     Repo.get_by(Territory, code: payload.code)
+  end
+
+  def atomise_and_fetch_by(map, :name) do
+     payload = atomise_map(map)
+     Repo.get_by(Territory, name: payload.name)
+  end
+
+"""
+   @doc this takes in an object with strings for keys and turns the strings into atoms.
+    example input: %{"code": "00", "name": "Singapore"}
+    outputs as: %{code: "00", name: "Singapore"}
+"""
+  def atomise_map(map) do
+     map
+     |> Enum.map(fn tuple -> atomise_tuple(tuple) end )
+     |> Enum.into %{}
+  end
+
+  def atomise_tuple({key, val}) do
+     {String.to_atom(key), val}
+  end
+
+  def remove_territory(struct) do
+     case Repo.delete(struct) do
+        {:ok, struct} ->
+           struct
+     end
+  end
+
+  def broadcast_removed_territory(territory, socket) do
+     broadcast socket, "remove_territory", %{name: territory.name,
+                                             code: territory.code}
      {:reply, :ok, socket}
   end
+
 
 
 
