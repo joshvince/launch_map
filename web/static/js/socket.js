@@ -66,28 +66,60 @@ if (document.getElementById('world-map-editable')) {
      .receive("ok", resp => { App.initialiseEditable(resp)})
      .receive("error", resp => { console.log("Unable to join", resp) })
 
+   //   $(document).on('click', 'path.jvectormap-region.jvectormap-element', function(){
+   //      let code = $(this).attr('data-code')
+   //      let payload = territoryPayloadObject(code)
+   //      function territoryPayloadObject(code){
+   //         return {"code": code, "name": Map.countries[code].name}
+   //      }
+   //      mapChannel.push('add_territory', payload)
+   //   })
+
+// MANIPULATING TERRITORIES FROM THE MAP
      $(document).on('click', 'path.jvectormap-region.jvectormap-element', function(){
-        let code = $(this).attr('data-code')
-        let payload = territoryPayloadObject(code)
-        function territoryPayloadObject(code){
-           return {"code": code, "name": Map.countries[code].name}
+        if ($(this).hasClass('added')) {
+   // REMOVE IT
+           console.log("fired removal block");
+           let code = $(this).attr('data-code')
+           let name = Map.countries[code].name
+           let payload = App.createPayload(name, code)
+           mapChannel.push("remove_territory", payload)
         }
+        else {
+   // ADD IT
+           let code = $(this).attr('data-code')
+           let name = Map.countries[code].name
+           let payload = App.createPayload(name, code)
+           mapChannel.push("add_territory", payload)
+        }
+     });
+// MANIPULATING TERRITORIES ADDED MANUALLY
+// REMOVING THEM
+     $(document).on('click', '.territory', function(){
+        let name = $(this).attr('data-name')
+        let code = $(this).attr('data-code')
+        let payload = App.createPayload(name, code)
+        mapChannel.push('remove_territory', payload)
+
+     })
+// ADDING THEM
+     $(document).on('click', '#add-manual-territory', function(){
+        let name = document.getElementById('manual-territory-name').value
+        let code = `0${name.slice(0,2).toUpperCase()}`
+        let payload = {"name": name, "code": code}
         mapChannel.push('add_territory', payload)
      })
 
-     $(document).on('click', '#add-manual-territory', function(){
-        let name = document.getElementById('manual-territory-name').value
-        let payload = {"name": name, "code": "00"}
-        mapChannel.push('manual_add_territory', payload)
+     mapChannel.on('add_territory', resp => {
+        App.addTerritory(resp)
      })
 
-     mapChannel.on('manual_add_territory', resp => {
-        App.displayManualAddedTerritory(resp)
+     //TODO: this doesn't work when the div has been created after the page has loaded. JQUERY is not picking up the div because it was created by the channel!
+     mapChannel.on('remove_territory', resp => {
+        App.removeTerritory(resp)
      })
 
 
-
-      // handle added/removed territories
 
 
 }
@@ -98,13 +130,16 @@ else {
      .receive("ok", resp => { App.initialise(resp)})
      .receive("error", resp => { console.log("Unable to join", resp) })
 
+
    mapChannel.on('add_territory', resp => {
-      App.update(resp)
+      App.addTerritory(resp)
    })
 
-   mapChannel.on('manual_add_territory', resp => {
-      App.updateManualAddedTerritory(resp)
+   mapChannel.on('remove_territory', resp => {
+      App.removeTerritory(resp)
    })
+
+
 
 }
 

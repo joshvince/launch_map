@@ -27,22 +27,45 @@ export var App = {
    initialise: function(territoryObject){
       Map.generate(territoryObject);
       Info.initialCount(territoryObject);
-      Info.addToStaticList(territoryObject, 'many');
+      Info.initialiseList(territoryObject);
    },
    initialiseEditable: function(territoryObject){
       Map.generateEditable(territoryObject);
+      Info.initialCount(territoryObject);
+      Info.initialiseList(territoryObject);
    },
-   update: function(updateObject){
-      Info.addToStaticList(updateObject, 'one')
-      Info.updateCount()
-      Map.addTerritory(updateObject.code, updateObject.name)
+   addTerritory: function(updateObject){
+      //TODO: refactor this so you that both editable and non-editable maps use the same code. See my ideas in removeTerritory for ideas.
+      let editableMap = document.getElementById('world-map-editable')
+
+      if (editableMap) {
+         console.log("fired editable block");
+         Info.updateCount('add')
+         Info.addToStaticList(updateObject, 'one')
+         if (updateObject.code[0] != "0") {
+            Map.addTerritoryEditable(updateObject.code, updateObject.name)
+         }
+      }
+      else {
+         console.log("fired noneditable block");
+         Info.updateCount('add')
+         Info.addToStaticList(updateObject, 'one')
+         if (updateObject.code[0] != "0") {
+            Map.addTerritory(updateObject.code, updateObject.name)
+         }
+
+      }
    },
-   updateManualAddedTerritory: function(updateObject){
-      Info.addToStaticList(updateObject, 'one')
-      Info.updateCount()
+   createPayload: function(name, code){
+      return {name: name, code: code}
    },
-   displayManualAddedTerritory: function(updateObject){
-      Info.addToDynamicList(updateObject)
+   removeTerritory: function(updateObject){
+      Info.updateCount("remove");
+      Info.removeFromList(updateObject.code);
+      if (updateObject.code[0] != "0") {
+         Map.removeTerritory('.map-wrapper', updateObject.code)
+      }
    }
+
 
 }

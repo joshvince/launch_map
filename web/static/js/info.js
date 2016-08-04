@@ -5,11 +5,33 @@ export var Info = {
       el.innerHTML =   `<h2 id="count-number"> ${count} </h2>
                         <h4> in total </h4>`
    },
-   updateCount: function(){
+   updateCount: function(param){
       let element = document.getElementById('count-number');
       let currentNum = element.innerHTML;
-      let newNum = (currentNum ++)
-      element.innerHTML = currentNum ++
+
+      if (param === "add") {
+         let newNum = (currentNum ++)
+         element.innerHTML = currentNum ++
+      }
+      else if (param === "remove") {
+         let newNum = (currentNum --)
+         element.innerHTML = currentNum --
+      }
+   },
+   initialiseList: function(territoryObject){
+      let containerDiv = document.getElementById('territory-list')
+      function setHTML(div, className, territoryObject){
+         div.innerHTML += `<div data-name="${territoryObject.name}"
+                                    data-code="${territoryObject.code}"
+                                    class="col-sm-12 territory ${className}">
+                                       <h4> ${territoryObject.name} </h4>
+                                    </div>`
+      }
+      Object.keys(territoryObject).map(
+         function(key){return territoryObject[key]
+         }).map(
+            function(obj){setHTML(containerDiv, 'dark', obj)
+         });
    },
    addToStaticList: function(territoryObject, param){
       let listDiv = document.getElementById('territory-list')
@@ -33,16 +55,7 @@ export var Info = {
       }
 
    },
-   addToDynamicList: function(territoryObject){
-      let listDiv = document.getElementById('manual-territory-list')
-
-      function setHTML(element, className, value){
-         element.innerHTML += `<div data-name="${value}" class="col-sm-12 country ${className}">
-                                 <h4> ${value} </h4>
-                               </div>`
-      }
-      setHTML(listDiv, 'dark', territoryObject.name)
+   removeFromList: function(code){
+      $('#territory-list').children(`div[data-code="${code}"]`).remove()
    }
-
-
 }
