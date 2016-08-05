@@ -1,7 +1,7 @@
 /* This file is for your main application css. */
 
 h1, h2, h3, h4, p {
-   font-family: 'Muli';
+   font-family: 'Muli', sans-serif;
    color: rgb(29, 37, 45);
 }
 
